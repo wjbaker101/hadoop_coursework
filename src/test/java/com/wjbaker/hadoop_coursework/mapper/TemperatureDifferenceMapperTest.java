@@ -8,13 +8,13 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class WordCountMapperTest {
+public class TemperatureDifferenceMapperTest {
 
     private MapDriver<Object, Text, Text, IntWritable> mapDriver;
 
     @Before
     public void setUp() {
-        WordCountMapper mapper = new WordCountMapper();
+        TemperatureDifferenceMapper mapper = new TemperatureDifferenceMapper();
         this.mapDriver = MapDriver.newMapDriver(mapper);
     }
 

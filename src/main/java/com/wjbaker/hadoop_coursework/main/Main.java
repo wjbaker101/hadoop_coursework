@@ -1,7 +1,7 @@
 package com.wjbaker.hadoop_coursework.main;
 
-import com.wjbaker.hadoop_coursework.mapper.WordCountMapper;
-import com.wjbaker.hadoop_coursework.reducer.WordCountReducer;
+import com.wjbaker.hadoop_coursework.mapper.TemperatureDifferenceMapper;
+import com.wjbaker.hadoop_coursework.reducer.TemperatureDifferenceReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -23,8 +23,8 @@ public class Main {
 
         Job job = Job.getInstance(config, "hadoop_coursework");
         job.setJarByClass(Main.class);
-        job.setMapperClass(WordCountMapper.class);
-        job.setReducerClass(WordCountReducer.class);
+        job.setMapperClass(TemperatureDifferenceMapper.class);
+        job.setReducerClass(TemperatureDifferenceReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 

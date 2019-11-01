@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class WordCountReducerTest {
+public class TemperatureDifferenceReducerTest {
 
     private ReduceDriver<Text, IntWritable, Text, IntWritable> reduceDriver;
 
     @Before
     public void setUp() {
-        WordCountReducer wordCountReducer = new WordCountReducer();
-        this.reduceDriver = ReduceDriver.newReduceDriver(wordCountReducer);
+        TemperatureDifferenceReducer temperatureDifferenceReducer = new TemperatureDifferenceReducer();
+        this.reduceDriver = ReduceDriver.newReduceDriver(temperatureDifferenceReducer);
     }
 
     @Test

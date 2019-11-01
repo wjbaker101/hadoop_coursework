@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 
-public class WordCountMapper extends Mapper<Object, Text, Text, IntWritable> {
+public class TemperatureDifferenceMapper extends Mapper<Object, Text, Text, IntWritable> {
 
     private static final String STATION_ID_OXFORD = "UK000056225";
     private static final String STATION_ID_WADDINTON = "UK000003377";

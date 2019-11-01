@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class TemperatureDifferenceReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
     @Override
     public void reduce(final Text key, final Iterable<IntWritable> values, final Context context)
