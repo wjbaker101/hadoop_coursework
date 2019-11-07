@@ -1,6 +1,6 @@
 package com.wjbaker.hadoop_coursework.mapper;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
 import org.junit.Before;
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class TemperatureDifferenceMapperTest {
 
-    private MapDriver<Object, Text, Text, IntWritable> mapDriver;
+    private MapDriver<Object, Text, Text, DoubleWritable> mapDriver;
 
     @Before
     public void setUp() {
@@ -30,8 +30,8 @@ public class TemperatureDifferenceMapperTest {
         this.mapDriver.withInput(new Text("c"), new Text("UK000056225,20180101,TMIN,44,,,E,"));
         this.mapDriver.withInput(new Text("c"), new Text("UK000056225,20180101,PRCP,19,,,E,"));
 
-        this.mapDriver.withOutput(new Text("UK000056225|20180101"), new IntWritable(103));
-        this.mapDriver.withOutput(new Text("UK000056225|20180101"), new IntWritable(44));
+        this.mapDriver.withOutput(new Text("UK000056225|20180101"), new DoubleWritable(10.3D));
+        this.mapDriver.withOutput(new Text("UK000056225|20180101"), new DoubleWritable(4.4D));
 
         this.mapDriver.runTest();
     }

@@ -21,12 +21,15 @@ public class Main {
     private Main(final String[] args) throws InterruptedException, IOException, ClassNotFoundException {
         Configuration config = new Configuration();
 
+        config.set("mapred.textoutputformat.separator", ",");
+
         Job job = Job.getInstance(config, "hadoop_coursework");
         job.setJarByClass(Main.class);
         job.setMapperClass(TemperatureDifferenceMapper.class);
         job.setReducerClass(TemperatureDifferenceReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
+        job.setNumReduceTasks(1);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));

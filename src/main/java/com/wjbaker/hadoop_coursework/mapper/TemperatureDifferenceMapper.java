@@ -1,12 +1,12 @@
 package com.wjbaker.hadoop_coursework.mapper;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
 
-public class TemperatureDifferenceMapper extends Mapper<Object, Text, Text, IntWritable> {
+public class TemperatureDifferenceMapper extends Mapper<Object, Text, Text, DoubleWritable> {
 
     private static final String STATION_ID_OXFORD = "UK000056225";
     private static final String STATION_ID_WADDINTON = "UK000003377";
@@ -31,8 +31,10 @@ public class TemperatureDifferenceMapper extends Mapper<Object, Text, Text, IntW
         String observationType = split[2];
         int observationValue = Integer.parseInt(split[3]);
 
+        double temperatureCelsius = observationValue / 10.0D;
+
         if (this.shouldAddToContext(stationID, observationType)) {
-            context.write(this.getKey(stationID, date), new IntWritable(observationValue));
+            context.write(this.getKey(stationID, date), new DoubleWritable(temperatureCelsius));
         }
     }
 

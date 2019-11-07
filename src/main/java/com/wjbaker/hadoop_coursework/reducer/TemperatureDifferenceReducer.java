@@ -6,7 +6,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
-public class TemperatureDifferenceReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class TemperatureDifferenceReducer extends Reducer<Text, IntWritable, IntWritable, Text> {
+
+    private static final Text BLANK_STRING = new Text("");
 
     @Override
     public void reduce(final Text key, final Iterable<IntWritable> values, final Context context)
@@ -32,7 +34,8 @@ public class TemperatureDifferenceReducer extends Reducer<Text, IntWritable, Tex
         if (difference != null) {
             int absoluteValue = Math.abs(difference);
 
-            context.write(key, new IntWritable(absoluteValue));
+            // Write the temperature difference as the key and a blank as the value so that one column will be produced
+            context.write(new IntWritable(absoluteValue), BLANK_STRING);
         }
     }
 }

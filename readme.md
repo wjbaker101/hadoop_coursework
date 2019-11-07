@@ -15,8 +15,32 @@ Documentation: https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/readme.txt
 mvn clean package
 ```
 
+## Running
+
+This Hadoop application is intended to be run in a Google Cloud Platform Dataproc cluster.
+
+In order to do so run the following command in the Google Cloud terminal:
+
+```
+gcloud dataproc jobs submit hadoop
+    --cluster hadoop-coursework
+    --region=us-central1
+    --jar gs://hadoop_coursework-willbaker10198/input/hadoop_coursework.jar
+    -- com.wjbaker.hadoop_coursework.main.Main
+        gs://hadoop_coursework-willbaker10198/input/2018-data.csv
+        gs://hadoop_coursework-willbaker10198/output
+```
+
+This makes an assumption that the the `2018-data.csv` and `hadoop_coursework.jar` files are present in a storage Bucket.
+
+This will produce multiple CSV files in the `output` directory. 
+
 ## Testing
 
-Run tests under the `/src/test` directory.
+Run tests under the `/src/test` directory:
 
-These tests test the mapper and reducer functions.
+```
+mvn clean test
+```
+
+These will test the mapper and reducer functions.

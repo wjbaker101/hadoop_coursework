@@ -13,7 +13,9 @@ import java.util.stream.IntStream;
 
 public class TemperatureDifferenceReducerTest {
 
-    private ReduceDriver<Text, IntWritable, Text, IntWritable> reduceDriver;
+    private static final Text BLANK_STRING = new Text("");
+
+    private ReduceDriver<Text, IntWritable, IntWritable, Text> reduceDriver;
 
     @Before
     public void setUp() {
@@ -39,8 +41,8 @@ public class TemperatureDifferenceReducerTest {
         this.reduceDriver.withInput(key1, values1);
         this.reduceDriver.withInput(key2, values2);
 
-        this.reduceDriver.withOutput(key1, new IntWritable(59));
-        this.reduceDriver.withOutput(key2, new IntWritable(288));
+        this.reduceDriver.withOutput(new IntWritable(59), BLANK_STRING);
+        this.reduceDriver.withOutput(new IntWritable(288), BLANK_STRING);
 
         this.reduceDriver.runTest();
     }
