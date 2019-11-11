@@ -46,4 +46,20 @@ public class TemperatureDifferenceReducerTest {
 
         this.reduceDriver.runTest();
     }
+
+    @Test
+    public void testReducerIgnoresKeysWithOnlyOneValue() throws IOException {
+        List<IntWritable> values1 = IntStream.of(103)
+                .boxed()
+                .map(IntWritable::new)
+                .collect(Collectors.toList());
+
+        Text key1 = new Text("UK000056225|20180101");
+
+        this.reduceDriver.withInput(key1, values1);
+
+        // We expect no outputs here
+
+        this.reduceDriver.runTest();
+    }
 }
