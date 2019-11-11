@@ -1,5 +1,6 @@
 package com.wjbaker.hadoop_coursework.reducer;
 
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
@@ -15,7 +16,7 @@ public class TemperatureDifferenceReducerTest {
 
     private static final Text BLANK_STRING = new Text("");
 
-    private ReduceDriver<Text, IntWritable, IntWritable, Text> reduceDriver;
+    private ReduceDriver<Text, DoubleWritable, DoubleWritable, Text> reduceDriver;
 
     @Before
     public void setUp() {
@@ -25,14 +26,14 @@ public class TemperatureDifferenceReducerTest {
 
     @Test
     public void testReducerProducesCorrectDifferences() throws IOException {
-        List<IntWritable> values1 = IntStream.of(103, 44)
+        List<DoubleWritable> values1 = IntStream.of(103, 44)
                 .boxed()
-                .map(IntWritable::new)
+                .map(DoubleWritable::new)
                 .collect(Collectors.toList());
 
-        List<IntWritable> values2 = IntStream.of(366, 78)
+        List<DoubleWritable> values2 = IntStream.of(366, 78)
                 .boxed()
-                .map(IntWritable::new)
+                .map(DoubleWritable::new)
                 .collect(Collectors.toList());
 
         Text key1 = new Text("UK000056225|20180101");
@@ -41,17 +42,17 @@ public class TemperatureDifferenceReducerTest {
         this.reduceDriver.withInput(key1, values1);
         this.reduceDriver.withInput(key2, values2);
 
-        this.reduceDriver.withOutput(new IntWritable(59), BLANK_STRING);
-        this.reduceDriver.withOutput(new IntWritable(288), BLANK_STRING);
+        this.reduceDriver.withOutput(new DoubleWritable(59), BLANK_STRING);
+        this.reduceDriver.withOutput(new DoubleWritable(288), BLANK_STRING);
 
         this.reduceDriver.runTest();
     }
 
     @Test
     public void testReducerIgnoresKeysWithOnlyOneValue() throws IOException {
-        List<IntWritable> values1 = IntStream.of(103)
+        List<DoubleWritable> values1 = IntStream.of(103)
                 .boxed()
-                .map(IntWritable::new)
+                .map(DoubleWritable::new)
                 .collect(Collectors.toList());
 
         Text key1 = new Text("UK000056225|20180101");

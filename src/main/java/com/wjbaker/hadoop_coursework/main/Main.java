@@ -4,6 +4,7 @@ import com.wjbaker.hadoop_coursework.mapper.TemperatureDifferenceMapper;
 import com.wjbaker.hadoop_coursework.reducer.TemperatureDifferenceReducer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -28,7 +29,7 @@ public class Main {
         job.setMapperClass(TemperatureDifferenceMapper.class);
         job.setReducerClass(TemperatureDifferenceReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(DoubleWritable.class);
         job.setNumReduceTasks(1);
 
         FileInputFormat.addInputPath(job, new Path(args[0]));
