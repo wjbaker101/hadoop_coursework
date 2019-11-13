@@ -29,7 +29,7 @@ gcloud dataproc jobs submit hadoop --cluster hadoop-coursework --region=us-centr
 
 This makes an assumption that the the `2018-data.csv` and `hadoop_coursework.jar` files are present in a storage Bucket.
 
-This will produce a single CSV formatted file in the `output` directory.   
+This will produce a CSV formatted file for Oxford and Waddington in the `output` directory.   
 
 ## Testing
 
