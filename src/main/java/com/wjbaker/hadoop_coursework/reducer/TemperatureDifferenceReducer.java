@@ -2,15 +2,14 @@ package com.wjbaker.hadoop_coursework.reducer;
 
 import com.wjbaker.hadoop_coursework.main.DataUtils;
 import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
 import java.io.IOException;
 
-public class TemperatureDifferenceReducer extends Reducer<Text, DoubleWritable, DoubleWritable, Text> {
-
-    private static final Text BLANK_STRING = new Text("");
+public class TemperatureDifferenceReducer extends Reducer<Text, DoubleWritable, DoubleWritable, NullWritable> {
 
     private MultipleOutputs multipleOutputs;
 
@@ -38,20 +37,31 @@ public class TemperatureDifferenceReducer extends Reducer<Text, DoubleWritable, 
             count++;
         }
 
-        // Ignore the current iteration if the difference has not been calculated
-        // Find the absolute value that was calculated, in case the min value was found before the max value
-        if (difference != null && count > 1) {
-            double absoluteValue = Math.abs(difference);
+        if (difference == null || count != 2) {
+            this.writeToOutput(key.toString(), -1.0D);
 
-            // Write the temperature difference as the key and a blank as the value so that one column will be produced
-            // Split the different stations into their own files when output
-            if (key.toString().startsWith(DataUtils.STATION_ID_OXFORD)) {
-                this.multipleOutputs.write("oxford", new DoubleWritable(absoluteValue), BLANK_STRING, "oxford");
-            }
+            return;
+        }
 
-            if (key.toString().startsWith(DataUtils.STATION_ID_WADDINGTON)) {
-                this.multipleOutputs.write("waddington", new DoubleWritable(absoluteValue), BLANK_STRING, "waddington");
-            }
+        this.writeToOutput(key.toString(), Math.abs(difference));
+    }
+
+    /**
+     * Write the temperature difference as the key and a blank as the value so that one column will be produced.
+     * Split the different stations into their own files when output.
+     */
+    private void writeToOutput(final String key, final double value) throws IOException, InterruptedException {
+        if (key.startsWith(DataUtils.STATION_ID_OXFORD)) {
+            this.multipleOutputs.write(
+                    "oxford", new DoubleWritable(value), NullWritable.get(), "oxford");
+        }
+
+        if (key.startsWith(DataUtils.STATION_ID_WADDINGTON)) {
+            this.multipleOutputs.write(
+                    "waddington",
+                    new DoubleWritable(value),
+                    NullWritable.get(),
+                    "waddington");
         }
     }
 
