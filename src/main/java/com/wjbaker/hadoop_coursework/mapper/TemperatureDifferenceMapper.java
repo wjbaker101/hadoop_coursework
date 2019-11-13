@@ -1,5 +1,6 @@
 package com.wjbaker.hadoop_coursework.mapper;
 
+import com.wjbaker.hadoop_coursework.main.DataUtils;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -7,9 +8,6 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 
 public class TemperatureDifferenceMapper extends Mapper<Object, Text, Text, DoubleWritable> {
-
-    private static final String STATION_ID_OXFORD = "UK000056225";
-    private static final String STATION_ID_WADDINTON = "UK000003377";
 
     private static final String OBSERVATION_TYPE_TEMPERATURE_MIN = "TMIN";
     private static final String OBSERVATION_TYPE_TEMPERATURE_MAX = "TMAX";
@@ -42,11 +40,11 @@ public class TemperatureDifferenceMapper extends Mapper<Object, Text, Text, Doub
      * Only include the stations and observation types we want.
      */
     private boolean shouldAddToContext(final String stationID, final String observationType) {
-        boolean isWantedStation = stationID.equals(STATION_ID_OXFORD) || stationID.equals(STATION_ID_WADDINTON);
+        boolean isWantedStation = stationID.equals(DataUtils.STATION_ID_OXFORD)
+                || stationID.equals(DataUtils.STATION_ID_WADDINGTON);
 
-        boolean isWantedObservationType =
-                observationType.equals(OBSERVATION_TYPE_TEMPERATURE_MIN)
-                        || observationType.equals(OBSERVATION_TYPE_TEMPERATURE_MAX);
+        boolean isWantedObservationType = observationType.equals(OBSERVATION_TYPE_TEMPERATURE_MIN)
+                || observationType.equals(OBSERVATION_TYPE_TEMPERATURE_MAX);
 
         return isWantedStation && isWantedObservationType;
     }

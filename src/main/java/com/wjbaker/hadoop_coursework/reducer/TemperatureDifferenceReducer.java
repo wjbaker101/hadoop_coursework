@@ -1,15 +1,18 @@
 package com.wjbaker.hadoop_coursework.reducer;
 
+import com.wjbaker.hadoop_coursework.main.DataUtils;
 import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
 import java.io.IOException;
 
 public class TemperatureDifferenceReducer extends Reducer<Text, DoubleWritable, DoubleWritable, Text> {
 
     private static final Text BLANK_STRING = new Text("");
+
+    private MultipleOutputs multipleOutputs;
 
     @Override
     public void reduce(final Text key, final Iterable<DoubleWritable> values, final Context context)
@@ -41,7 +44,24 @@ public class TemperatureDifferenceReducer extends Reducer<Text, DoubleWritable, 
             double absoluteValue = Math.abs(difference);
 
             // Write the temperature difference as the key and a blank as the value so that one column will be produced
-            context.write(new DoubleWritable(absoluteValue), BLANK_STRING);
+            // Split the different stations into their own files when output
+            if (key.toString().startsWith(DataUtils.STATION_ID_OXFORD)) {
+                this.multipleOutputs.write("oxford", new DoubleWritable(absoluteValue), BLANK_STRING, "oxford");
+            }
+
+            if (key.toString().startsWith(DataUtils.STATION_ID_WADDINGTON)) {
+                this.multipleOutputs.write("waddington", new DoubleWritable(absoluteValue), BLANK_STRING, "waddington");
+            }
         }
+    }
+
+    @Override
+    public void setup(final Context context) {
+        this.multipleOutputs = new MultipleOutputs<>(context);
+    }
+
+    @Override
+    public void cleanup(final Context context) throws IOException, InterruptedException {
+        this.multipleOutputs.close();
     }
 }
